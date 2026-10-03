@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Rida - 6th October</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #ffe6eb, #ffccd5);
+            font-family: 'Poppins', sans-serif;
+            color: #5c1d24;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Step Pagination Header */
+        .pagination-bar {
+            position: absolute;
+            top: 20px;
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(219, 112, 147, 0.2);
+            z-index: 100;
+        }
+        .page-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f5b7b1;
+            font-size: 9px;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #78281f;
+            transition: all 0.3s ease;
+        }
+        .page-dot.active {
+            background: #900c3f;
+            color: #fff;
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(144, 12, 63, 0.5);
+        }
+
+        /* Container Pages */
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 420px;
+            height: 88vh;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 35px rgba(219, 112, 147, 0.25);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            text-align: center;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+            overflow-y: auto;
+        }
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #900c3f;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 0.9rem;
+            color: #6c343e;
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(45deg, #c70039, #900c3f);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(199, 0, 57, 0.4);
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(199, 0, 57, 0.6);
+        }
+
+        /* Loading Screen (00) */
+        .loader-box {
+            width: 100px;
+            height: 100px;
+            margin: 10px auto;
+        }
+        .loader-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulseBeat 1s infinite alternate;
+        }
+        @keyframes pulseBeat {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #fadbd8;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .loading-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: #900c3f;
+            transition: width 0.1s linear;
+        }
+
+        /* Teddy Image Frame */
+        .teddy-banner {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 5px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #ffb6c1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+        .teddy-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Memories Grid (05) */
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .memory-card {
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 0.75rem;
+        }
+        .memory-card img {
+            width: 100%;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+
+        /* Constellation Canvas (06) */
+        #constellationCanvas {
+            width: 100%;
+            height: 220px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 15px;
+            cursor: pointer;
+            margin: 8px 0;
+            touch-action: none;
+        }
+
+        /* Countdown */
+        .countdown-timer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #c70039;
+            margin: 10px 0;
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pagination Header (00 to 07) -->
+    <div class="pagination-bar" id="paginationBar">
+        <div class="page-dot active" data-screen="0">00</div>
+        <div class="page-dot" data-screen="1">01</div>
+        <div class="page-dot" data-screen="2">02</div>
+        <div class="page-dot" data-screen="3">03</div>
+        <div class="page-dot" data-screen="4">04</div>
+        <div class="page-dot" data-screen="5">05</div>
+        <div class="page-dot" data-screen="6">06</div>
+        <div class="page-dot" data-screen="7">07</div>
+    </div>
+
+    <!-- Screen 00: Loading -->
+    <div class="screen active" id="screen-0">
+        <div>
+            <h2>Preparing Something Special</h2>
+            <p>Just a little surprise for my Queen...</p>
+        </div>
+        <div class="loader-box">
+            <img src="https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif" alt="Cute Teddy">
+        </div>
+        <div>
+            <div class="loading-bar-container">
+                <div class="loading-bar-fill" id="loadingFill"></div>
+            </div>
+            <div id="loadingPercentage" style="font-weight:600; color:#900c3f;">0%</div>
+        </div>
+    </div>
+
+    <!-- Screen 01: Welcome / Intro -->
+    <div class="screen" id="screen-1">
+        <div>
+            <div class="teddy-banner">
+                <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Teddy Love">
+            </div>
+            <h2>For My Princess Rida</h2>
+            <p>A small digital world created exclusively for the most special person in my life.</p>
+        </div>
+        <div style="font-style: italic; color: #c70039; font-weight: 600; font-size: 0.9rem;">
+            "October 6th - Your Special Day!"
+        </div>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 02: Countdown to Oct 6 -->
+    <div class="screen" id="screen-2">
+        <div>
+            <div class="teddy-banner" style="width: 100px; height: 100px;">
+                <img src="https://media.giphy.com/media/Jfbfc7SEUTnLHAcnSO/giphy.gif" alt="Cute Bear">
+            </div>
+            <h2>The Big Day</h2>
+            <p>Counting down every second to October 6th, 2026!</p>
+            <div class="countdown-timer" id="countdownDisplay">Calculating...</div>
+        </div>
+        <p style="font-size: 0.8rem;">The day my entire universe celebrated your arrival.</p>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 03: Special Poetry -->
+    <div class="screen" id="screen-3">
+        <div>
+            <div class="teddy-banner" style="width: 100px; height: 100px;">
+                <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Teddy Heart">
+            </div>
+            <h2>From My Heart</h2>
+            <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 12px; margin-top: 8px; font-style: italic; font-size: 0.85rem; line-height: 1.5; color: #78281f;">
+                "Ye khwahish hai mery dil ki har waqt sath aap ka ho,<br>
+                jitny bhi saansein chalein, mery har saans pe naam aap ka ho..." ❤️
+            </div>
+        </div>
+        <p style="font-size: 0.8rem;">You make every single breath meaningful, Rida.</p>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 04: Compliments -->
+    <div class="screen" id="screen-4">
+        <div>
+            <div class="teddy-banner" style="width: 90px; height: 90px;">
+                <img src="https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.gif" alt="Funny Bear">
+            </div>
+            <h2>Why You Are Unique</h2>
+            <ul style="text-align: left; margin: 8px 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6; color: #6c343e;">
+                <li>✨ Your unmatched cute smile</li>
+                <li>💖 Your pure and beautiful heart</li>
+                <li>🌹 My eternal Queen & Princess</li>
+                <li>🥰 The best part of my daily life</li>
+            </ul>
+        </div>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 05: Memories -->
+    <div class="screen" id="screen-5">
+        <div>
+            <h2>Our Memories</h2>
+            <p style="font-size: 0.8rem;">Some moments stay forever in our hearts[cite: 7, 8, 9, 10].</p>
+            <div class="memories-grid">
+                <div class="memory-card">
+                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazNlMGg2dnJ1NGV3cWlhczZpOTN2a2d4Ym5wbW96b3Z3OWZ2Y200NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9xyhzn6hI0Apy/giphy.gif" alt="Memory">
+                    <span>Our first wonderful memory</span>
+                </div>
+                <div class="memory-card">
+                    <img src="https://media.giphy.com/media/7efah5W9mBwCL4lO5E/giphy.gif" alt="Memory">
+                    <span>Endless smiles together</span>
+                </div>
+                <div class="memory-card">
+                    <img src="https://media.giphy.com/media/26u4v35Q8056G975m/giphy.gif" alt="Memory">
+                    <span>Every moment is special</span>
+                </div>
+                <div class="memory-card">
+                    <img src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif" alt="Memory">
+                    <span>Two hearts, one journey</span>
+                </div>
+            </div>
+        </div>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 06: Constellation Touch Interactive -->
+    <div class="screen" id="screen-6">
+        <div>
+            <h2>Constellation</h2>
+            <p style="font-size: 0.8rem;">Touch or drag across the box to paint your heart constellation ✨</p>
+            <canvas id="constellationCanvas"></canvas>
+        </div>
+        <button class="btn-primary" onclick="nextScreen()">Continue ➔</button>
+    </div>
+
+    <!-- Screen 07: Final Birthday Wish -->
+    <div class="screen" id="screen-7">
+        <div>
+            <div class="teddy-banner" style="width: 100px; height: 100px;">
+                <img src="https://media.giphy.com/media/13Hgw5H00XiarK/giphy.gif" alt="Birthday Bear">
+            </div>
+            <h2>Happy Birthday Rida!</h2>
+            <p style="margin-top: 5px; font-size: 0.95rem;">May your life always be as beautiful as your heart.</p>
+            <p style="margin-top: 8px; font-weight: 600; color: #900c3f; font-size: 0.9rem;">Made with immense love, just for you. ❤️</p>
+        </div>
+        <button class="btn-primary" onclick="restartExperience()">Replay The Surprise 🔄</button>
+    </div>
+
+    <script>
+        let currentScreen = 0;
+        const totalScreens = 8;
+
+        let progress = 0;
+        const loadingFill = document.getElementById("loadingFill");
+        const loadingPercentage = document.getElementById("loadingPercentage");
+
+        const loadInterval = setInterval(() => {
+            progress += 2;
+            if (loadingFill) loadingFill.style.width = progress + "%";
+            if (loadingPercentage) loadingPercentage.innerText = progress + "%";
+            if (progress >= 100) {
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    goToScreen(1);
+                }, 500);
+            }
+        }, 40);
+
+        function goToScreen(screenIndex) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`screen-${screenIndex}`).classList.add('active');
+            
+            document.querySelectorAll('.page-dot').forEach((dot, idx) => {
+                if (idx === screenIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            currentScreen = screenIndex;
+        }
+
+        function nextScreen() {
+            if (currentScreen < totalScreens - 1) {
+                goToScreen(currentScreen + 1);
+            }
+        }
+
+        function restartExperience() {
+            goToScreen(1);
+        }
+
+        // Countdown to Oct 6, 2026
+        function updateCountdown() {
+            const targetDate = new Date("October 6, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const display = document.getElementById("countdownDisplay");
+            if (!display) return;
+
+            if (difference < 0) {
+                display.innerText = "Today is your Special Day! 🎉";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            display.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s left`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Constellation Canvas Drawing Effect
+        const canvas = document.getElementById("constellationCanvas");
+        if (canvas) {
+            const ctx = canvas.getContext("2d");
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            let isDrawing = false;
+
+            function drawStar(x, y) {
+                ctx.fillStyle = "#ff1493";
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener("pointerdown", (e) => {
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                drawStar(e.clientX - rect.left, e.clientY - rect.top);
+            });
+
+            canvas.addEventListener("pointermove", (e) => {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                drawStar(e.clientX - rect.left, e.clientY - rect.top);
+            });
+
+            window.addEventListener("pointerup", () => {
+                isDrawing = false;
+            });
+        }
+    </script>
+</body>
+</html>
